@@ -1,20 +1,16 @@
 #pragma once
 
-#include <functional>
 #include <string>
 
 class Tester {
 public:
-	using RunTest = std::function<bool(std::string, std::string)>;
-
-	Tester(int argc, char** argv, RunTest run_test);
-
+  Tester(int argc, char** argv);
 	void run();
 
 private:
 	std::string in_file(int i) const;
 	std::string out_file(int i) const;
-
-	RunTest run_test_;
-	std::string test_dir_path_;
+  std::string m_test_path;
 };
+
+bool run_test(const std::string& in, const std::string& out);

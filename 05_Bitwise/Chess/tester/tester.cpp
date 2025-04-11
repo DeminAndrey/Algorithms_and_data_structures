@@ -1,35 +1,40 @@
 #include "tester.hpp"
+#include "../chess.hpp"
 
-#include <chrono>
 #include <iostream>
 #include <fstream>
 
-using namespace std::chrono;
+#include <boost/algorithm/string/classification.hpp>
+#include <boost/algorithm/string/split.hpp>
 
-Tester::Tester(int argc, char** argv, RunTest run_test)
- : run_test_(run_test) {
+enum Figure {
+  King = 1,
+  Knigt = 2
+};
+
+Tester::Tester(int argc, char** argv) {
 	if (argc < 2) {
-		std::cout << "test dir path not specifed" << std::endl;
-		exit(1);
+    std::cout << "test path not specifed" << std::endl;
+    exit(EXIT_FAILURE);
 	}
-
-	test_dir_path_ = argv[1];
+  m_test_path = argv[1];
 }
 
 std::string Tester::in_file(int i) const {
-  return test_dir_path_ + "/test." + std::to_string(i) + ".in";
+  return m_test_path + "/test." + std::to_string(i) + ".in";
 }
+
 std::string Tester::out_file(int i) const {
-  return test_dir_path_ + "/test." + std::to_string(i) + ".out";
+  return m_test_path + "/test." + std::to_string(i) + ".out";
 }
 
 void Tester::run() {
-	std::cout << "test dir path: " << test_dir_path_ << std::endl;
+  std::cout << "test path: " << m_test_path << "\n" << std::endl;
 
-	int num = 0;
-	while (1) {
-		std::ifstream fin(in_file(num));
-		std::ifstream fout(out_file(num));
+  int test_num = 0;
+  while (true) {
+    std::ifstream fin(in_file(test_num));
+    std::ifstream fout(out_file(test_num));
 
 		if (!fin.good() || !fout.good()) {
 			break;
@@ -40,14 +45,52 @@ void Tester::run() {
 		std::string out{std::istreambuf_iterator<char>(fout),
                  	   std::istreambuf_iterator<char>()};
 
-		auto start = high_resolution_clock::now();
-		std::string result = run_test_(in, out) ? "True" : "False";
-		auto stop = high_resolution_clock::now();
-		auto duration = duration_cast<milliseconds>(stop - start);
+    bool success = run_test(in, out);
 
-    std::cout << "test " << num << " result: " << result << ", time "
-              << duration.count() << " ms" << std::endl;
+    std::cout << "test: " << test_num << ", success: "
+              << std::boolalpha << success << "\n" << std::endl;
 
-		++num;
+    ++test_num;
 	}
+}
+
+bool get_moves(Figure figure, int pos) {
+  switch (figure) {
+  case Figure::King:
+    return Chess::get_king_moves(pos);
+  case Figure::Knigt:
+    return Chess::get_knigt_moves(pos);
+  }
+}
+
+bool run_test(const std::string& in, const std::string& out) {
+  int in_pos = std::stoi(in);
+  std::vector<std::string> splitted;
+  auto out_vec = boost::algorithm::split(splitted, out,
+                                         boost::algorithm::is_any_of("\n"),
+                                         boost::token_compress_on);
+  if (out_vec.size() < 2) {
+    std::cout << "unexpected input: " << out << std::endl;
+    return false;
+  }
+
+  int expected_moves_count = std::stoi(out_vec[0]);
+  unsigned long long expected_moves_mask = std::stoull(out_vec[1]);
+
+  unsigned long long computed_moves_mask = Chess::get_king_moves(in_pos);
+  int computed_moves_count = BitCounter::counting_by_subtraction(computed_moves_mask);
+
+  std::cout << "for position " << std::dec << in_pos << ", moves count: "
+            << computed_moves_count << " and mask: 0x" << std::hex
+            << computed_moves_mask << std::endl;
+
+  return expected_moves_count == computed_moves_count &&
+         expected_moves_mask == computed_moves_mask;
+}
+
+int main(int argc, char** argv) {
+  Tester tester(argc, argv);
+  tester.run();
+
+  return EXIT_SUCCESS;
 }

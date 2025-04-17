@@ -1,6 +1,6 @@
-#include "tester.hpp"
+#include "tester.h"
 #include "../task1.h"
-#include "../task2.h"
+#include "../task3.h"
 
 #include <iostream>
 #include <fstream>
@@ -43,7 +43,7 @@ void Tester::run_all() {
     in.erase(std::remove(in.begin(), in.end(), '\n'), in.end());
     out.erase(std::remove(out.begin(), out.end(), '\n'), out.end());
 
-    // здесь нужно указать нужныый тест test_1, test_2
+    // здесь нужно указать нужныый тест test_1, test_3
     bool success = test_1(in, out);
 
     std::cout << "test: " << test_num << ", success: "
@@ -78,16 +78,22 @@ bool test_1(const std::string& in, const std::string& out) {
   return computed == out;
 }
 
-bool test_2(const std::string& in, const std::string& out) {
+bool test_3(const std::string& in, const std::string& out) {
   if (in.empty() || out.empty()) {
     std::cout << "unexpected input!" << std::endl;
     return false;
   }
 
-  int N = std::stoi(in);
-  int computed = numbers_from_5_and_8(N);
+  try {
+    int N = std::stoi(in);
+    long long computed = numbers_from_5_and_8(N);
 
-  int expected = std::stoi(out);
+    long long expected = std::stoll(out);
 
-  return computed == expected;
+    return computed == expected;
+  }
+  catch (const std::exception& ex) {
+    std::cerr << "error: " << ex.what() << std::endl;
+  }
+  return false;
 }

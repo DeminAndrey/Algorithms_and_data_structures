@@ -1,16 +1,13 @@
 #pragma once
 
-#include <iostream>
 #include <vector>
 
 using namespace std;
 
 const int MOD = 1e9 + 7;
 
-void islands_in_matrix() {
-  int N;
-  cin >> N;
-
+// Возвращает количество N-значных чисел из цифр 5 и 8 без трех одинаковых подряд
+long long numbers_from_5_and_8(int N) {
   // dp[n][last_digit][count]
   vector<vector<vector<long long>>> dp(N + 1, vector<vector<long long>>(2, vector<long long>(3)));
 
@@ -45,5 +42,5 @@ void islands_in_matrix() {
     }
   }
 
-  cout << result % MOD << endl;
+  return result % MOD;
 }

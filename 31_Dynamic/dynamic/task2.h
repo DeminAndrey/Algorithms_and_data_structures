@@ -1,50 +1,34 @@
-#pragma once
-
+#include <algorithm>
 #include <iostream>
-#include <string>
-#include <sstream>
 #include <vector>
 
-using namespace std;
+// Функция для нахождения максимальной суммы гирлянды
+void new_year_tree(const std::vector<std::vector<int>>& tree) {
+  int N = static_cast<int>(tree.size()); // Высоту получаем автоматически из дерева
 
-int numbers_from_5_and_8(int N) {
-  vector<vector<int>> tree(N); // Ёлка
-  vector<int> dp(N);           // Массив для хранения максимальных сумм
+  // Таблица динамического программирования
+  std::vector<std::vector<int>> dp(N, std::vector<int>(N));
 
-  // Чтение дерева
-  for (int i = 0; i < N; ++i) {
-    string line;
-    getline(cin, line); // Пропускаем пустые строки после ввода высоты
-    istringstream iss(line);
+  // Верхушка ёлочки
+  dp[0][0] = tree[0][0];
 
-    while (iss.good()) {
-      int digit;
-      iss >> digit;
-      tree[i].push_back(digit);
-    }
-  }
-
-  // Инициализация первого уровня
-  dp[0] = tree[0][0];
-
-  // Обработка остальных уровней
+  // Динамическая обработка дерева
   for (int level = 1; level < N; ++level) {
-    for (size_t pos = 0; pos <= level; ++pos) {
-      if (pos == 0) { // Левый край
-        dp[pos] = max(dp[pos], dp[pos - 1]) + tree[level][pos];
-      } else if (pos == level) { // Правый край
-        dp[pos] = max(dp[pos], dp[pos - 1]) + tree[level][pos];
-      } else { // Промежуточные позиции
-        dp[pos] = max(dp[pos], max(dp[pos - 1], dp[pos])) + tree[level][pos];
-      }
+    for (int pos = 0; pos <= level; ++pos) {
+      // Либо идём сверху слева, либо сверху справа
+      int leftParent = (pos > 0) ? dp[level - 1][pos - 1] : INT_MIN;
+      int rightParent = (pos < level) ? dp[level - 1][pos] : INT_MIN;
+
+      // Берём лучшее направление и добавляем текущее значение
+      dp[level][pos] = std::max(leftParent, rightParent) + tree[level][pos];
     }
   }
 
-  // Ответ — максимальная сумма в последнем уровне
-  int max_sum = 0;
+  // Находим максимальную сумму на последнем уровне
+  int maxSum = 0;
   for (int i = 0; i < N; ++i) {
-    max_sum = max(max_sum, dp[i]);
+    maxSum = std::max(maxSum, dp[N - 1][i]);
   }
 
-  return max_sum;
+  std::cout << "Максимальная сумма гирлянды: " << maxSum << std::endl;
 }

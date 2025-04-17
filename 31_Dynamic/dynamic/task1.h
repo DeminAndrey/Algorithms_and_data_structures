@@ -1,18 +1,20 @@
-#include <iostream>
 #include <numeric>
-#include <ratio>
-#include <utility>
 #include <string>
+#include <stdexcept>
 
 /**
- * @brief suslik_and_homa
- * @param a
- * @param b
- * @param c
- * @param d
- * @return
+ * @brief Расчёт справедливого деления гороха между Сусликом и Хомой
+ * @param a - числитель первой дроби
+ * @param b - знаменатель первой дроби
+ * @param c - числитель второй дроби
+ * @param d - знаменатель второй дроби
+ * @return результат сложения двух дробей представленную в виде строки
+ * @exception если в знаменателе любой дроби нулевое значение
  */
 std::string suslik_and_homa(int a, int b, int c, int d) {
+  if (b == 0 || d == 0) {
+    throw std::invalid_argument("Zero denominator!");
+  }
   // Найти сумму дробей
   int numerator = a * d + b * c;
   int denominator = b * d;

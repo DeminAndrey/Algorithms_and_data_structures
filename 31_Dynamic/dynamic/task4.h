@@ -1,6 +1,5 @@
 #pragma once
 
-#include <iostream>
 #include <vector>
 
 using namespace std;
@@ -33,14 +32,4 @@ int findIslands(vector<vector<char>>& grid) {
     }
   }
   return islandsCount;
-}
-
-// Пример использования
-void new_year_tree() {
-  vector<vector<char>> grid = {
-      {'1', '0', '1'},
-      {'0', '1', '0'},
-      {'1', '0', '1'}
-  };
-  cout << findIslands(grid) << endl;  // Должно вывести 4
 }

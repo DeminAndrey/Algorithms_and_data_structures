@@ -16,4 +16,4 @@ private:
 // тестирование задачи про суслика и Хому, делящих горох
 bool test_1(const std::string& in, const std::string& out);
 // тестирование задачи про N-значные числа из цифр 5 и 8
-bool test_2(const std::string& in, const std::string& out);
+bool test_3(const std::string& in, const std::string& out);

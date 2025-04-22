@@ -5,6 +5,8 @@
 #include "SortManager.h"
 #include "ShellSort.h"
 #include "HeapSort.h"
+#include "MergeSort.h"
+#include "RadixSort.h"
 
 #include <iostream>
 
@@ -19,11 +21,13 @@ int main() {
   SortManager manager;
 
   // Регистрируем известные сортировки
-  manager.registerSorter<BubbleSort>("Bubble Sort");
-  manager.registerSorter<InsertionSort>("Insertion Sort");
+  //manager.registerSorter<BubbleSort>("Bubble Sort");
+  //manager.registerSorter<InsertionSort>("Insertion Sort");
   manager.registerSorter<QuickSort>("Quick Sort");
   manager.registerSorter<ShellSort>("Shell Sort");
   manager.registerSorter<HeapSort>("Heap Sort");
+  manager.registerSorter<MergeSort>("Merge Sort");
+  //manager.registerSorter<RadixSort>("Radix Sort");
 
   // Генерируем случайный массив
   std::vector<int> data = ArrayGenerator::generateRandomArray(arraySize);

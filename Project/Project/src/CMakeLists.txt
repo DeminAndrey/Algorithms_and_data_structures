@@ -5,7 +5,8 @@ set(SORTERS_SRC
   ${PROJECT_SOURCE_DIR}/src/QuickSort.cxx
   ${PROJECT_SOURCE_DIR}/src/ShellSort.cxx
   ${PROJECT_SOURCE_DIR}/src/HeapSort.cxx
-  # Остальные сортеры...
+  ${PROJECT_SOURCE_DIR}/src/MergeSort.cxx
+  ${PROJECT_SOURCE_DIR}/src/RadixSort.cxx
 )
 
 # Библиотека сортеров

@@ -3,13 +3,17 @@ set(SORTERS_SRC
   ${PROJECT_SOURCE_DIR}/src/BubbleSort.cxx
   ${PROJECT_SOURCE_DIR}/src/InsertionSort.cxx
   ${PROJECT_SOURCE_DIR}/src/QuickSort.cxx
+  ${PROJECT_SOURCE_DIR}/src/ShellSort.cxx
+  ${PROJECT_SOURCE_DIR}/src/HeapSort.cxx
   # Остальные сортеры...
 )
 
 # Библиотека сортеров
-add_library(SorterLib ${PROJECT_SOURCE_DIR}/src/Sorter.cxx
+add_library(SorterLib
+  ${PROJECT_SOURCE_DIR}/src/Sorter.cxx
   ${PROJECT_SOURCE_DIR}/src/ArrayGenerator.cxx
   ${PROJECT_SOURCE_DIR}/src/Statistics.cxx
+  ${PROJECT_SOURCE_DIR}/src/SortManager.cxx
 )
 
 # Связываем библиотеку с необходимыми заголовками

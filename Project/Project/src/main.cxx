@@ -7,6 +7,9 @@
 #include "HeapSort.h"
 #include "MergeSort.h"
 #include "RadixSort.h"
+#include "BucketSort.h"
+#include "CountingSort.h"
+#include "SelectionSort.h"
 
 #include <iostream>
 
@@ -21,13 +24,16 @@ int main() {
   SortManager manager;
 
   // Регистрируем известные сортировки
-  //manager.registerSorter<BubbleSort>("Bubble Sort");
-  //manager.registerSorter<InsertionSort>("Insertion Sort");
-  manager.registerSorter<QuickSort>("Quick Sort");
-  manager.registerSorter<ShellSort>("Shell Sort");
-  manager.registerSorter<HeapSort>("Heap Sort");
-  manager.registerSorter<MergeSort>("Merge Sort");
-  //manager.registerSorter<RadixSort>("Radix Sort");
+  /*1*/ manager.registerSorter<BubbleSort>("Bubble Sort"); // Пузырьковая
+  /*2*/ manager.registerSorter<InsertionSort>("Insertion Sort"); // Вставками
+  /*3*/ manager.registerSorter<QuickSort>("Quick Sort"); // Быстрая
+  /*4*/ manager.registerSorter<ShellSort>("Shell Sort"); // Шелла
+  /*5*/ manager.registerSorter<HeapSort>("Heap Sort"); // Пирамидальная
+  /*6*/ manager.registerSorter<MergeSort>("Merge Sort"); // Слиянием
+  /*7*/ manager.registerSorter<BucketSort>("Bucket Sort"); // Блочная
+  /*8*/ manager.registerSorter<CountingSort>("Counting Sort"); // Подсчётом
+  /*9*/ manager.registerSorter<SelectionSort>("Selection Sort"); // Выбором
+  /*10*/ //manager.registerSorter<RadixSort>("Radix Sort"); // Поразрядная
 
   // Генерируем случайный массив
   std::vector<int> data = ArrayGenerator::generateRandomArray(arraySize);
